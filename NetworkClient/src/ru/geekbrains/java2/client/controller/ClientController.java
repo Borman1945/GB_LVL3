@@ -4,6 +4,7 @@ import ru.geekbrains.java2.client.Command;
 import ru.geekbrains.java2.client.view.AuthDialog;
 import ru.geekbrains.java2.client.view.ClientChat;
 import ru.geekbrains.java2.client.model.NetworkService;
+import ru.geekbrains.java2.client.view.NameDialog;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -16,17 +17,23 @@ public class ClientController {
     private final NetworkService networkService;
     private final AuthDialog authDialog;
     private final ClientChat clientChat;
+    private final NameDialog nameDialog;
     private String nickname;
 
     public ClientController(String serverHost, int serverPort) {
         this.networkService = new NetworkService(serverHost, serverPort);
         this.authDialog = new AuthDialog(this);
         this.clientChat = new ClientChat(this);
+        this.nameDialog = new NameDialog(this);
     }
 
     public void runApplication() throws IOException {
         connectToServer();
         runAuthProcess();
+    }
+
+    public void activateNewName(){
+        nameDialog.setVisible(true);
     }
 
     private void runAuthProcess() {
@@ -68,6 +75,10 @@ public class ClientController {
 
     public void sendAuthMessage(String login, String pass) throws IOException {
         networkService.sendCommand(authCommand(login, pass));
+    }
+
+    public void newName(String name) throws IOException {
+        networkService.sendCommand(changeName(name, nickname));
     }
 
     public void sendMessageToAllUsers(String message) {

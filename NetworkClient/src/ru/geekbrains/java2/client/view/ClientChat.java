@@ -14,6 +14,7 @@ public class ClientChat extends JFrame {
     private JTextField messageTextField;
     private JButton sendButton;
     private JTextArea chatText;
+    private JButton newNameButton;
 
     private ClientController controller;
 
@@ -35,6 +36,11 @@ public class ClientChat extends JFrame {
     private void addListeners() {
         sendButton.addActionListener(e -> ClientChat.this.sendMessage());
         messageTextField.addActionListener(e -> sendMessage());
+        newNameButton.addActionListener(e -> openNemaDialog());
+    }
+
+    private void openNemaDialog(){
+        controller.activateNewName();
     }
 
     private void sendMessage() {

@@ -4,8 +4,10 @@ import ru.geekbrains.java2.client.Command;
 import ru.geekbrains.java2.client.CommandType;
 import ru.geekbrains.java2.client.command.AuthCommand;
 import ru.geekbrains.java2.client.command.BroadcastMessageCommand;
+import ru.geekbrains.java2.client.command.ChangeNameCommand;
 import ru.geekbrains.java2.client.command.PrivateMessageCommand;
 import ru.geekbrains.java2.server.NetworkServer;
+import ru.geekbrains.java2.server.auth.ChangeNameService;
 
 import java.io.*;
 import java.net.Socket;
@@ -80,6 +82,11 @@ public class ClientHandler {
                     BroadcastMessageCommand commandData = (BroadcastMessageCommand) command.getData();
                     String message = commandData.getMessage();
                     networkServer.broadcastMessage(Command.messageCommand(nickname, message), this);
+                    break;
+                }
+                case CHANGE:{
+                    ChangeNameCommand changeNameCommand = (ChangeNameCommand) command.getData();
+                    ChangeNameService.changeName(changeNameCommand.getNewName(),changeNameCommand.getNickname());
                     break;
                 }
                 default:
