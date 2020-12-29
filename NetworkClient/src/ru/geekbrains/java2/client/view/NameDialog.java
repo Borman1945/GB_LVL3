@@ -32,7 +32,7 @@ public class NameDialog extends JFrame{
 
     private void changeName(){
         String newName =  loginText.getText();
-        if (newName.trim() != "" || newName != null){
+        if (newName != null && !newName.trim().equals("")){
             try {
                 controller.newName(newName);
                 this.setVisible(false);
