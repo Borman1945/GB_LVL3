@@ -4,6 +4,7 @@ import ru.geekbrains.java2.client.Command;
 import ru.geekbrains.java2.server.auth.AuthService;
 import ru.geekbrains.java2.server.auth.BaseAuthService;
 import ru.geekbrains.java2.server.client.ClientHandler;
+import ru.geekbrains.java2.server.thrredService.ThredService;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -42,6 +43,7 @@ public class NetworkServer {
             e.printStackTrace();
         } finally {
             authService.stop();
+            ThredService.getExecutorService().shutdown();
         }
     }
 
