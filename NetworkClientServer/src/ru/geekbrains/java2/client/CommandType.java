@@ -6,6 +6,7 @@ public enum CommandType {
     PRIVATE_MESSAGE,
     BROADCAST_MESSAGE,
     MESSAGE,
+    CHANGE,
     UPDATE_USERS_LIST,
     ERROR,
     END,

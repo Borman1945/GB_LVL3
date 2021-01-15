@@ -1,36 +1,22 @@
 package ru.geekbrains.java2.server.auth;
 
+import homework.day_one.Test;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
+import static ru.geekbrains.java2.server.db.ConnectionDBServise.getConnection;
+
 public class BaseAuthService implements AuthService {
 
-    private static class UserData {
-        private String login;
-        private String password;
-        private String username;
-
-        public UserData(String login, String password, String username) {
-            this.login = login;
-            this.password = password;
-            this.username = username;
-        }
-    }
-
-    private static final List<UserData> USER_DATA = List.of(
-            new UserData("login1", "pass1", "username1"),
-            new UserData("login2", "pass2", "username2"),
-            new UserData("login3", "pass3", "username3")
-    );
+    private static final String SELECT_USERNAME =  "SELECT username from users where login = ? and password = ?";
 
     @Override
     public String getUsernameByLoginAndPassword(String login, String password) {
-        for (UserData userDatum : USER_DATA) {
-            if (userDatum.login.equals(login) && userDatum.password.equals(password)) {
-                return userDatum.username;
-            }
-        }
-        return null;
+        return selectUserData(login,password);
     }
 
     @Override
@@ -42,4 +28,24 @@ public class BaseAuthService implements AuthService {
     public void stop() {
         System.out.println("Сервис аутентификации оставлен");
     }
+
+
+
+    private String selectUserData(String login, String password){
+
+        try (PreparedStatement prepareStatement = getConnection().prepareStatement(SELECT_USERNAME)){
+            prepareStatement.setString(1,login);
+            prepareStatement.setString(2,password);
+            ResultSet resultSet = prepareStatement.executeQuery();
+            String username = null;
+            while(resultSet.next()){
+                username = resultSet.getString("username");
+            }
+            return username;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+    }
+
 }
