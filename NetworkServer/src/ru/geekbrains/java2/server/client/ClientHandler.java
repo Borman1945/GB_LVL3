@@ -8,6 +8,7 @@ import ru.geekbrains.java2.client.command.ChangeNameCommand;
 import ru.geekbrains.java2.client.command.PrivateMessageCommand;
 import ru.geekbrains.java2.server.NetworkServer;
 import ru.geekbrains.java2.server.auth.ChangeNameService;
+import ru.geekbrains.java2.server.thrredService.ThredService;
 
 import java.io.*;
 import java.net.Socket;
@@ -35,8 +36,7 @@ public class ClientHandler {
         try {
             out = new ObjectOutputStream(socket.getOutputStream());
             in = new ObjectInputStream(socket.getInputStream());
-
-            new Thread(() -> {
+            ThredService.getExecutorService().execute(() -> {
                 try {
                     authentication();
                     readMessages();
@@ -45,7 +45,7 @@ public class ClientHandler {
                 } finally {
                     closeConnection();
                 }
-            }).start();
+            });
 
         } catch (IOException e) {
             e.printStackTrace();
