@@ -1,5 +1,6 @@
 package ru.geekbrains.java2.server;
 
+import org.apache.log4j.Logger;
 import ru.geekbrains.java2.client.Command;
 import ru.geekbrains.java2.server.auth.AuthService;
 import ru.geekbrains.java2.server.auth.BaseAuthService;
@@ -16,7 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 public class NetworkServer {
-
+    private static final Logger logger = Logger.getLogger(NetworkServer.class);
     private final int port;
 //    private final List<ClientHandler> clients = new ArrayList<>();
 //    private final List<ClientHandler> clients = Collections.synchronizedList(new ArrayList<>());
@@ -30,12 +31,15 @@ public class NetworkServer {
 
     public void start() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Сервер был успешно запущен на порту " + port);
+            logger.info("Сервер был успешно запущен на порту " + port);
+            //System.out.println("Сервер был успешно запущен на порту " + port);
             authService.start();
             while (true) {
-                System.out.println("Ожидание клиентского подключения...");
+                logger.info("Ожидание клиентского подключения...");
+                //System.out.println("Ожидание клиентского подключения...");
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("Клиент подлючился");
+                logger.info("Ожидание клиентского подключения...");
+                //System.out.println("Клиент подлючился");
                 createClientHandler(clientSocket);
             }
         } catch (IOException e) {
