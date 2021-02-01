@@ -1,6 +1,7 @@
 package ru.geekbrains.java2.server.auth;
 
 import homework.day_one.Test;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +12,7 @@ import java.util.Objects;
 import static ru.geekbrains.java2.server.db.ConnectionDBServise.getConnection;
 
 public class BaseAuthService implements AuthService {
-
+    private static final Logger logger = Logger.getLogger(BaseAuthService.class);
     private static final String SELECT_USERNAME =  "SELECT username from users where login = ? and password = ?";
 
     @Override
@@ -21,12 +22,14 @@ public class BaseAuthService implements AuthService {
 
     @Override
     public void start() {
-        System.out.println("Сервис аутентификации запущен");
+        logger.info("Сервис аутентификации запущен");
+        //System.out.println("Сервис аутентификации запущен");
     }
 
     @Override
     public void stop() {
-        System.out.println("Сервис аутентификации оставлен");
+        logger.info("Сервис аутентификации оставлен");
+        //System.out.println("Сервис аутентификации оставлен");
     }
 
 
